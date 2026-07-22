@@ -56,7 +56,7 @@ If authorization reports `org_internal`, change the OAuth audience from Internal
 ## 2. Install GoHealth
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/gohealth.git
+git clone https://github.com/Wolfvus/gohealth.git
 cd gohealth
 npm install
 npm link
