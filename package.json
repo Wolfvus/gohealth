@@ -1,0 +1,38 @@
+{
+  "name": "gohealth-own-your-data",
+  "version": "1.0.0",
+  "private": true,
+  "bin": {
+    "goh": "bin/goh"
+  },
+  "description": "Own your health data with a local Google Health insights dashboard",
+  "license": "MIT",
+  "keywords": ["google-health", "fitbit", "grafana", "health-data", "self-hosted"],
+  "scripts": {
+    "build": "tsc",
+    "health": "node --import tsx src/cli.ts",
+    "start": "node --import tsx src/server.ts",
+    "auth": "node --import tsx src/server.ts",
+    "dashboard": "npm run health -- start",
+    "dashboard:import": "node --max-old-space-size=1024 --import tsx src/dashboard-import.ts",
+    "dashboard:stop": "npm run health -- stop",
+    "export": "node --import tsx src/export-cli.ts",
+    "refresh": "npm run health -- refresh 30",
+    "typecheck": "tsc --noEmit"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "google-auth-library": "^10.3.0",
+    "pg": "^8.22.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.0.14",
+    "@types/pg": "^8.20.0",
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3"
+  }
+}

@@ -1,0 +1,19 @@
+apiVersion: 1
+
+datasources:
+  - name: GoHealth PostgreSQL
+    uid: gohealth-postgres
+    type: postgres
+    access: proxy
+    url: postgres:5432
+    user: gohealth
+    database: gohealth
+    isDefault: true
+    editable: false
+    jsonData:
+      database: gohealth
+      sslmode: disable
+      postgresVersion: 1700
+      timescaledb: false
+    secureJsonData:
+      password: $POSTGRES_PASSWORD

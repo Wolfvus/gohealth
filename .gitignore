@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.secrets/
+*client_secret*.json
+*credentials*.json
+data/*.json
+data/*.json.gz
+.DS_Store
+*.log
+.env
+.idea/
+.vscode/

@@ -1,0 +1,10 @@
+#!/bin/sh
+
+goh_script=$0
+while [ -L "$goh_script" ]; do
+  goh_script=$(readlink "$goh_script")
+done
+goh_root=$(CDPATH= cd -- "$(dirname -- "$goh_script")/.." && pwd)
+
+cd "$goh_root" || exit 1
+exec node --import tsx src/cli.ts "$@"

@@ -1,0 +1,45 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: gohealth
+      POSTGRES_USER: gohealth
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-gohealth_local}
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - gohealth-postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U gohealth -d gohealth"]
+      interval: 2s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:12.4.0
+    environment:
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER:-admin}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:-admin}
+      GF_USERS_ALLOW_SIGN_UP: "false"
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: "Viewer"
+      GF_AUTH_DISABLE_LOGIN_FORM: "true"
+      GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH: /var/lib/grafana/dashboards/health-overview.json
+      GF_EXPLORE_ENABLED: "false"
+      GF_NEWS_NEWS_FEED_ENABLED: "false"
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-gohealth_local}
+    ports:
+      - "127.0.0.1:3001:3000"
+    volumes:
+      - gohealth-grafana:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  gohealth-postgres:
+  gohealth-grafana:
