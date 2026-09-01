@@ -76,7 +76,7 @@ Copy `.env.example` to `.env` and choose your own values:
 cp .env.example .env
 ```
 
-`POSTGRES_PASSWORD` is required: PostgreSQL, Grafana, and the importer all refuse to start without it. `GRAFANA_ADMIN_USER` and `GRAFANA_ADMIN_PASSWORD` are the credentials you use to sign in to the dashboard.
+`POSTGRES_PASSWORD` and `GRAFANA_ADMIN_PASSWORD` are both required; PostgreSQL and Grafana refuse to start without them, as does the importer without `POSTGRES_PASSWORD`. `GRAFANA_ADMIN_PASSWORD`, with `GRAFANA_ADMIN_USER` (default `admin`), is what you use to sign in to the dashboard.
 
 ## 4. Authorize and start
 
