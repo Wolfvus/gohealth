@@ -19,5 +19,6 @@ jobs:
       - run: npm ci
       - run: npm run typecheck
       - run: npm run build
+      - run: npm audit --audit-level=high
       - name: Validate Grafana dashboard
         run: node -e "JSON.parse(require('node:fs').readFileSync('grafana/dashboards/health-overview.json', 'utf8'))"

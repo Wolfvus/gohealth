@@ -3,8 +3,8 @@ dist/
 .secrets/
 *client_secret*.json
 *credentials*.json
-data/*.json
-data/*.json.gz
+data/*
+!data/.gitkeep
 .DS_Store
 *.log
 .env
