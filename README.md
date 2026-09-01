@@ -68,7 +68,17 @@ Confirm the CLI is available:
 goh --help
 ```
 
-## 3. Authorize and start
+## 3. Set your local passwords
+
+Copy `.env.example` to `.env` and choose your own values:
+
+```bash
+cp .env.example .env
+```
+
+`POSTGRES_PASSWORD` is required: PostgreSQL, Grafana, and the importer all refuse to start without it. `GRAFANA_ADMIN_USER` and `GRAFANA_ADMIN_PASSWORD` are the credentials you use to sign in to the dashboard.
+
+## 4. Authorize and start
 
 ```bash
 goh auth
@@ -76,7 +86,7 @@ goh start
 goh open
 ```
 
-`goh auth` starts a temporary server on port 3000, opens the OAuth flow, securely stores the returned token, and downloads the first export. `goh start` launches PostgreSQL and Grafana and imports the newest export. `goh open` opens the insight dashboard in a focused kiosk view.
+`goh auth` starts a temporary server on port 3000, opens the OAuth flow, securely stores the returned token, and downloads the first export. `goh start` launches PostgreSQL and Grafana and imports the newest export. `goh open` opens the insight dashboard in a focused kiosk view and prompts for your Grafana admin login.
 
 ## CLI
 
@@ -112,6 +122,7 @@ These are general-wellness summaries, not medical scores, diagnoses, predictions
 - Raw health exports are stored under `data/` as owner-only gzip files.
 - Credentials, tokens, exports, `.env`, build output, and local editor state are excluded by `.gitignore`.
 - Grafana and PostgreSQL bind only to `127.0.0.1`.
+- Grafana requires a login; anonymous access is disabled. Set your own `POSTGRES_PASSWORD` and `GRAFANA_ADMIN_PASSWORD` in `.env`; there are no default passwords.
 - GoHealth never prints client secrets or refresh tokens.
 - Compression is lossless; detailed health samples remain present in the export.
 

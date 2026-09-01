@@ -415,12 +415,16 @@ async function buildDailyRows(filePath: string): Promise<Map<string, Aggregate>>
 }
 
 async function importRows(filePath: string, days: Map<string, Aggregate>): Promise<void> {
+  const password = process.env.POSTGRES_PASSWORD;
+  if (!password) {
+    throw new Error("POSTGRES_PASSWORD is not set. Copy .env.example to .env and set POSTGRES_PASSWORD, then retry.");
+  }
   const client = new Client({
     host: process.env.POSTGRES_HOST ?? "127.0.0.1",
     port: Number(process.env.POSTGRES_PORT ?? 5432),
     database: process.env.POSTGRES_DB ?? "gohealth",
     user: process.env.POSTGRES_USER ?? "gohealth",
-    password: process.env.POSTGRES_PASSWORD ?? "gohealth_local"
+    password
   });
   await client.connect();
   try {
