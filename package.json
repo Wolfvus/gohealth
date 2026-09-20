@@ -9,6 +9,7 @@
   "license": "MIT",
   "keywords": ["google-health", "fitbit", "grafana", "health-data", "self-hosted"],
   "scripts": {
+    "test": "npm run build && node --test tests/*.test.mjs",
     "build": "tsc",
     "health": "node --import tsx src/cli.ts",
     "start": "node --import tsx src/server.ts",
