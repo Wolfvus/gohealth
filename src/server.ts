@@ -1,11 +1,12 @@
 import { randomBytes, timingSafeEqual } from "node:crypto";
+import type { Server } from "node:http";
 import express from "express";
 import { parseDays, shouldCompress, shouldIncludeTcx } from "./args.js";
 import { createOAuthClient, exchangeAndSaveCode } from "./auth.js";
 import { PORT, REDIRECT_URI, SCOPES } from "./config.js";
 import { exportHealthData } from "./exporter.js";
 
-async function main(): Promise<void> {
+export async function startAuthorizationServer(port = PORT): Promise<Server> {
   const client = await createOAuthClient(false);
   const state = randomBytes(32).toString("hex");
   const args = process.argv.slice(2);
@@ -52,15 +53,18 @@ async function main(): Promise<void> {
     }
   });
 
-  const server = app.listen(PORT, () => {
+  const server = app.listen(port, "127.0.0.1", () => {
     process.stdout.write(`Local server listening at http://localhost:${PORT}\n`);
     process.stdout.write(`Open http://localhost:${PORT}/auth to authorize Google Health access.\n`);
     process.stdout.write(`OAuth callback: ${REDIRECT_URI}\n`);
   });
+  return server;
 }
 
-main().catch((error: unknown) => {
-  const message = error instanceof Error ? error.message : "Server failed to start.";
-  process.stderr.write(`${message}\n`);
-  process.exitCode = 1;
-});
+if (require.main === module) {
+  startAuthorizationServer().catch((error: unknown) => {
+    const message = error instanceof Error ? error.message : "Server failed to start.";
+    process.stderr.write(`${message}\n`);
+    process.exitCode = 1;
+  });
+}
