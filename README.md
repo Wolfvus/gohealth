@@ -58,8 +58,8 @@ If authorization reports `org_internal`, change the OAuth audience from Internal
 ```bash
 git clone https://github.com/Wolfvus/gohealth.git
 cd gohealth
-npm install
-npm link
+pnpm install
+pnpm link --global
 ```
 
 Confirm the CLI is available:
@@ -131,9 +131,9 @@ Before publishing a fork, inspect the entire Git history for credentials and per
 ## Development
 
 ```bash
-npm ci
-npm run typecheck
-npm run build
+pnpm install --frozen-lockfile
+pnpm run typecheck
+pnpm run build
 ```
 
 ## License
