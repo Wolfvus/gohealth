@@ -28,7 +28,7 @@
     "typecheck": "tsc --noEmit"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=24.22.1"
   },
   "dependencies": {
     "express": "^5.3.0",
