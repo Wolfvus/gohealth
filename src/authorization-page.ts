@@ -35,7 +35,7 @@ const stages = {
     step: "CONNECTION INCOMPLETE",
     title: "Couldn’t finish connecting.",
     description:
-      "Authorization or export failed. Check the error in your terminal before trying again.",
+      "Authorization or export failed. Check the error in your terminal, then press Ctrl+C to stop the previous command before trying again.",
     action:
       '<div class="command"><span>Restart authorization from your terminal</span><code>goh auth</code></div>',
     detail:

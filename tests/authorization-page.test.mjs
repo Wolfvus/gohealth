@@ -21,4 +21,5 @@ test('all authorization states render accessible, self-contained pages', () => {
   }
   assert.match(authorizationPage('invalid'), /goh auth/);
   assert.match(authorizationPage('failed'), /Check the error in your terminal/);
+  assert.match(authorizationPage('failed'), /Ctrl\+C to stop the previous command/);
 });
