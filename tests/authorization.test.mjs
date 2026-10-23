@@ -23,6 +23,14 @@ test('OAuth server binds loopback and rejects invalid callbacks without storing 
     const address = server.address();
     assert.equal(address.address, '127.0.0.1');
     const origin = `http://127.0.0.1:${address.port}`;
+    const landing = await fetch(origin);
+    assert.equal(landing.status, 200);
+    const html = await landing.text();
+    assert.match(html, /<html lang="en">/);
+    assert.match(html, /name="viewport"/);
+    assert.match(html, /href="\/auth"/);
+    assert.match(html, /Connect Google Health/);
+    assert.doesNotMatch(html, /test-only-not-a-real-secret/);
     const authorization = await fetch(`${origin}/auth`, { redirect: 'manual' });
     assert.equal(authorization.status, 302);
     const state = new URL(authorization.headers.get('location')).searchParams.get('state');
@@ -30,6 +38,7 @@ test('OAuth server binds loopback and rejects invalid callbacks without storing 
     for (const query of ['', '?code=test', `?code=test&state=${'0'.repeat(64)}`, `?state=${state}`]) {
       const response = await fetch(`${origin}/oauth2/callback${query}`);
       assert.equal(response.status, 400);
+      assert.match(await response.text(), /Let’s connect again/);
     }
     await assert.rejects(access(join(directory, '.secrets/google-health-tokens.json')));
   } finally {

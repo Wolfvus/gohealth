@@ -6,6 +6,10 @@ GoHealth is a local-first TypeScript CLI and Grafana dashboard for exporting you
 
 Your OAuth tokens, raw exports, and database remain local. GoHealth is an independent open-source project and is not affiliated with or endorsed by Google, Fitbit, GoHealth LLC, or any healthcare provider.
 
+![GoHealth connection screen — no account or health data](docs/images/connect.png)
+
+*The local connection screen. No account or health data is shown.*
+
 ## What you get
 
 - Google OAuth 2.0 authorization with offline refresh tokens
@@ -86,7 +90,7 @@ goh start
 goh open
 ```
 
-`goh auth` starts a temporary server on port 3000, opens the OAuth flow, securely stores the returned token, and downloads the first export. `goh start` launches PostgreSQL and Grafana and imports the newest export. `goh open` opens the insight dashboard in a focused kiosk view and prompts for your Grafana admin login.
+`goh auth` starts a temporary server on port 3000. Open the local link printed in your terminal and select **Connect Google Health**. GoHealth securely stores the returned token and downloads the first export. Keep the terminal open until it confirms **Export saved**, then run `goh start` and `goh open`. `goh start` launches PostgreSQL and Grafana and imports the newest export. `goh open` opens the insight dashboard in a focused kiosk view and prompts for your Grafana admin login.
 
 ## CLI
 
@@ -128,12 +132,19 @@ These are general-wellness summaries, not medical scores, diagnoses, predictions
 
 Before publishing a fork, inspect the entire Git history for credentials and personal data. Never commit downloaded OAuth JSON, tokens, or health exports.
 
+## How it is built
+
+- TypeScript and Express handle the local OAuth flow; a random state token protects the callback and the server binds to loopback.
+- Gzip exports retain the original health samples. PostgreSQL stores the imported data and Grafana renders the trends.
+- The authorization UI uses plain HTML and CSS with system fonts: no client-side JavaScript or external font requests.
+- The dashboard places confidence guidance before the scores, so provisional results have context.
+
 ## Development
 
 ```bash
 pnpm install --frozen-lockfile
 pnpm run typecheck
-pnpm run build
+pnpm test
 ```
 
 ## License
