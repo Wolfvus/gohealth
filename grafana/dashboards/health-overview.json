@@ -10,6 +10,21 @@
   "liveNow": false,
   "panels": [
     {
+      "id": 23,
+      "type": "text",
+      "title": "Start here",
+      "gridPos": {
+        "h": 4,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "options": {
+        "mode": "markdown",
+        "content": "### Your health, in context\nRead **score confidence** alongside wellness scores. Below 60% confidence, scores are provisional. Missing measurements are not zero.\n\nUse the time range above to explore trends. Refresh your data from the terminal with `goh refresh`. These experimental summaries are for general wellness, not diagnosis or treatment."
+      }
+    },
+    {
       "datasource": {
         "type": "grafana-postgresql-datasource",
         "uid": "gohealth-postgres"
@@ -30,7 +45,7 @@
         "h": 5,
         "w": 4,
         "x": 10,
-        "y": 0
+        "y": 4
       },
       "id": 4,
       "options": {
@@ -109,7 +124,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 22
+        "y": 26
       },
       "id": 6,
       "options": {
@@ -188,7 +203,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 14
+        "y": 18
       },
       "id": 8,
       "options": {
@@ -358,7 +373,7 @@
         "h": 8,
         "w": 8,
         "x": 0,
-        "y": 30
+        "y": 34
       },
       "id": 9,
       "options": {
@@ -436,7 +451,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 22
+        "y": 26
       },
       "id": 10,
       "options": {
@@ -559,7 +574,7 @@
         "h": 8,
         "w": 8,
         "x": 8,
-        "y": 30
+        "y": 34
       },
       "id": 13,
       "options": {
@@ -638,7 +653,7 @@
         "h": 8,
         "w": 8,
         "x": 16,
-        "y": 30
+        "y": 34
       },
       "id": 14,
       "options": {
@@ -719,7 +734,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 14
+        "y": 18
       },
       "id": 16,
       "options": {
@@ -788,7 +803,7 @@
         "h": 5,
         "w": 6,
         "x": 0,
-        "y": 0
+        "y": 4
       },
       "id": 17,
       "options": {
@@ -857,7 +872,7 @@
         "h": 5,
         "w": 4,
         "x": 6,
-        "y": 0
+        "y": 4
       },
       "id": 18,
       "options": {
@@ -926,7 +941,7 @@
         "h": 5,
         "w": 6,
         "x": 14,
-        "y": 0
+        "y": 4
       },
       "id": 19,
       "options": {
@@ -995,7 +1010,7 @@
         "h": 5,
         "w": 4,
         "x": 20,
-        "y": 0
+        "y": 4
       },
       "id": 20,
       "options": {
@@ -1123,7 +1138,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 5
+        "y": 9
       },
       "id": 21,
       "options": {
@@ -1187,7 +1202,7 @@
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 38
+        "y": 42
       },
       "id": 22,
       "options": {

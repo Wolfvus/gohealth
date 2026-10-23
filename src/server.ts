@@ -4,6 +4,7 @@ import express from "express";
 import { parseDays, shouldCompress, shouldIncludeTcx } from "./args.js";
 import { createOAuthClient, exchangeAndSaveCode } from "./auth.js";
 import { PORT, REDIRECT_URI, SCOPES } from "./config.js";
+import { authorizationPage } from "./authorization-page.js";
 import { exportHealthData } from "./exporter.js";
 
 export async function startAuthorizationServer(port = PORT): Promise<Server> {
@@ -21,7 +22,7 @@ export async function startAuthorizationServer(port = PORT): Promise<Server> {
   });
 
   app.get("/", (_request, response) => {
-    response.type("html").send('<h1>Google Health local exporter</h1><p><a href="/auth">Authorize and export data</a></p>');
+    response.type("html").send(authorizationPage("connect"));
   });
   app.get("/auth", (_request, response) => response.redirect(authorizeUrl));
   app.get("/oauth2/callback", async (request, response) => {
@@ -30,13 +31,13 @@ export async function startAuthorizationServer(port = PORT): Promise<Server> {
     const expected = Buffer.from(state);
     const actual = Buffer.from(returnedState);
     if (!code || actual.length !== expected.length || !timingSafeEqual(actual, expected)) {
-      response.status(400).send("Invalid OAuth callback. Return to the terminal and restart authorization.");
+      response.status(400).type("html").send(authorizationPage("invalid"));
       return;
     }
 
     try {
       await exchangeAndSaveCode(client, code);
-      response.type("html").send("<h1>Authorization complete</h1><p>The local export is running. You may close this tab.</p>");
+      response.type("html").send(authorizationPage("exporting"));
       const outputPath = await exportHealthData(client, {
         days: parseDays(args),
         includeTcx: shouldIncludeTcx(args),
@@ -46,7 +47,7 @@ export async function startAuthorizationServer(port = PORT): Promise<Server> {
       server.close();
     } catch (error) {
       if (!response.headersSent) {
-        response.status(500).send("Authorization or export failed. See the terminal for a sanitized error.");
+        response.status(500).type("html").send(authorizationPage("failed"));
       }
       const message = error instanceof Error ? error.message : "Authorization or export failed.";
       process.stderr.write(`${message}\n`);
@@ -54,8 +55,10 @@ export async function startAuthorizationServer(port = PORT): Promise<Server> {
   });
 
   const server = app.listen(port, "127.0.0.1", () => {
-    process.stdout.write(`Local server listening at http://localhost:${PORT}\n`);
-    process.stdout.write(`Open http://localhost:${PORT}/auth to authorize Google Health access.\n`);
+    const address = server.address();
+    const listeningPort = address && typeof address !== "string" ? address.port : port;
+    process.stdout.write(`Local server listening at http://localhost:${listeningPort}\n`);
+    process.stdout.write(`Open http://localhost:${listeningPort}/ to authorize Google Health access.\n`);
     process.stdout.write(`OAuth callback: ${REDIRECT_URI}\n`);
   });
   return server;
