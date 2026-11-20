@@ -18,11 +18,26 @@ Your OAuth tokens, raw exports, and database remain local. GoHealth is an indepe
 ## Requirements
 
 - Node.js 20 or newer
+- pnpm 12.9.1 (the version pinned in `package.json`)
 - Docker Desktop, Colima, or another Docker-compatible engine
 - A Google account with Google Health/Fitbit data
 - A Google Cloud project with Google Health API enabled
 
-## 1. Configure Google Health API
+## 1. Install GoHealth
+
+```bash
+git clone https://github.com/Wolfvus/gohealth.git
+cd gohealth
+pnpm install --frozen-lockfile
+```
+
+Run the CLI from the repository root to check the installation.
+
+```bash
+./bin/goh --help
+```
+
+## 2. Configure Google Health API
 
 Google Health uses OAuth client credentials, not a simple API key. Each user should create their own Google Cloud project and keep its client secret private.
 
@@ -53,21 +68,6 @@ export GOOGLE_HEALTH_CREDENTIALS=/absolute/path/to/client-credentials.json
 
 If authorization reports `org_internal`, change the OAuth audience from Internal to External or use an account in the configured organization. Google currently limits Testing projects to listed test users, and Testing-mode refresh tokens may expire after seven days; see the [official OAuth setup documentation](https://developers.google.com/health/setup).
 
-## 2. Install GoHealth
-
-```bash
-git clone https://github.com/Wolfvus/gohealth.git
-cd gohealth
-pnpm install
-pnpm link --global
-```
-
-Confirm the CLI is available:
-
-```bash
-goh --help
-```
-
 ## 3. Set your local passwords
 
 Copy `.env.example` to `.env` and choose your own values:
@@ -81,25 +81,25 @@ cp .env.example .env
 ## 4. Authorize and start
 
 ```bash
-goh auth
-goh start
-goh open
+./bin/goh auth
+./bin/goh start
+./bin/goh open
 ```
 
-`goh auth` starts a temporary server on port 3000, opens the OAuth flow, securely stores the returned token, and downloads the first export. `goh start` launches PostgreSQL and Grafana and imports the newest export. `goh open` opens the insight dashboard in a focused kiosk view and prompts for your Grafana admin login.
+`./bin/goh auth` starts a temporary server on port 3000, opens the OAuth flow, securely stores the returned token, and downloads the first export. `./bin/goh start` launches PostgreSQL and Grafana and imports the newest export. `./bin/goh open` opens the insight dashboard in a focused kiosk view and prompts for your Grafana admin login.
 
 ## CLI
 
 ```text
-goh start            Start the dashboard
-goh stop             Stop the dashboard
-goh restart          Restart the dashboard
-goh refresh          Pull and import the latest 30 days
-goh refresh 90       Pull and import the latest 90 days
-goh status           Show service status
-goh open             Open the insights dashboard
-goh auth             Renew Google authorization
-goh --help           Show help
+./bin/goh start            Start the dashboard
+./bin/goh stop             Stop the dashboard
+./bin/goh restart          Restart the dashboard
+./bin/goh refresh          Pull and import the latest 30 days
+./bin/goh refresh 90       Pull and import the latest 90 days
+./bin/goh status           Show service status
+./bin/goh open             Open the insights dashboard
+./bin/goh auth             Renew Google authorization
+./bin/goh --help           Show help
 ```
 
 A successful refresh keeps only the newest compressed raw snapshot. Cleanup happens only after both export and database import succeed.
