@@ -17,7 +17,7 @@ Your OAuth tokens, raw exports, and database remain local. GoHealth is an indepe
 
 ## Requirements
 
-- Node.js 20 or newer
+- Node.js 24.22.3 or newer
 - pnpm 12.9.1 (the version pinned in `package.json`)
 - Docker Desktop, Colima, or another Docker-compatible engine
 - A Google account with Google Health/Fitbit data
